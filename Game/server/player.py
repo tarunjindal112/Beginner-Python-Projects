@@ -14,7 +14,7 @@ class Player(object):
     def update_score(self, x):
         self.score += x
 
-    def guess(self,string):
+    def guess(self, string):
         pass
 
     def disconnect(self):
