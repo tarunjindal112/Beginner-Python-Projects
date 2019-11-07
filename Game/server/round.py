@@ -8,7 +8,7 @@ from .chat import Chat
 
 
 class Round(object):
-    def __init__(self, word, player_drawing, players):
+    def __init__(self, word, player_drawing, players, game):
         """
         init object
         :param word: str
@@ -23,6 +23,34 @@ class Round(object):
         self.time = 75
         self.chat = Chat(self)
         start_new_thread(self.time_thread, ())
+
+    def skip(self):
+        """
+        Return true if round skipped threshold met
+        :return:
+        """
+        self.skips += 1
+        if self.skips > len(self.players) - 2:
+
+            return True
+        return False
+
+    def get_scores(self):
+        """
+        :returns all the player scores
+        """
+        return self.scores
+
+    def get_score(self,player):
+        """
+        get a specific players scores
+        :param player: Player
+        :return: int
+        """
+        if player in self.player_scores:
+            return self.player_scores[player]
+        else:
+            raise Exception("Player not in score list")
 
     def time_thread(self):
         """
@@ -63,7 +91,6 @@ class Round(object):
         if player == self.player_drawing:
             self.end_round("Drawing player leaves")
 
-    def end_round(self, msg):
-        # TODO implemented end_scoring functionality
-        pass
+    def end_round(self):
+        self.game.round_ended()
 
