@@ -7,9 +7,10 @@ from .board import Board
 from .round import Round
 import random
 
+
 class Game(object):
 
-    def __init__(self, id, players, thread):
+    def __init__(self, id, players):
         """
         init the game! once player threshold is met
         :param id: int
@@ -21,7 +22,6 @@ class Game(object):
         self.round = None
         self.board = Board
         self.player_draw_ind = 0
-        self.connected_thread = thread
         self.start_new_round()
 
     def start_new_round(self):
