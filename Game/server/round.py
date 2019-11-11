@@ -3,8 +3,7 @@ Represents a round of a game, storing things like word, time, skips, drawing pla
 """
 import time as t
 from _thread import *
-from .game import Game
-from .chat import Chat
+from chat import Chat
 
 
 class Round(object):
@@ -93,5 +92,7 @@ class Round(object):
             self.end_round("Drawing player leaves")
 
     def end_round(self):
+        for player in self.players:
+            player.update_score(self.player_scores[player])
         self.game.round_ended()
 

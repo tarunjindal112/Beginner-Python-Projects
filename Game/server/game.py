@@ -2,9 +2,8 @@
 Handles operation related to the game and connections
 between player, board, chat and round
 """
-from .player import Player
-from .board import Board
-from .round import Round
+from board import Board
+from round import Round
 import random
 
 
@@ -22,12 +21,14 @@ class Game(object):
         self.round = None
         self.board = Board
         self.player_draw_ind = 0
+        self.round_count = 1
         self.start_new_round()
 
     def start_new_round(self):
         round_word = self.get_word()
         self.round = Round(round_word, self.players[self.player_draw_ind], self.players, self)
         self.player_draw_ind += 1
+        self.round_count += 1
 
         if self.player_draw_ind >= len(self.players):
             self.end_round()
@@ -75,6 +76,14 @@ class Game(object):
                 self.round_ended()
         else:
             raise Exception("No round started yet")
+
+    def get_player_scores(self):
+        """
+        give a dict of player scores.
+        :return: dict
+        """
+        scores = {player: player.get_score() for player in self.players}
+        return scores
 
     def round_ended(self):
         """
