@@ -22,16 +22,16 @@ class Network:
     def send(self, data):
         try:
 
-            self.client.send(data.encode())
-            return json.loads(self.client.recv(2048))
+            self.client.send(json.dumps(data).encode())
+            return json.loads(self.client.recv(2048).decode())
         except socket.error as e:
             self.disconnect(e)
 
     def disconnect(self, msg):
         print("[EXCEPTION] Disconnected from server:", msg)
+        self.send({10:[]})
         self.client.close()
 
 
 n = Network("Tarun")
-print(n.connect())
 print(n.send({0: []}))

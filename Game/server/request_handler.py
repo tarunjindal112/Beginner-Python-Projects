@@ -6,7 +6,6 @@ request from the client
 
 import socket
 import threading
-import time
 from player import Player
 from game import Game
 import json
@@ -23,21 +22,22 @@ class Server(object):
         """
         handles in game communication between clients
         :param conn: connection object
-        :param ip: str
-        :param name: str
         :param player: Player
         :return: None
         """
         while True:
             try:
-                send_msg = {}
                 # Receive request
-                data = conn.recv(1024)
-                data = json.load(data)
+                try:
+                    data = conn.recv(1024)
+                    data = json.loads(data.decode())
+                    print('[LOG] Received data:', data)
+                except:
+                    break
 
                 # Player is not a part of game
-                keys = [key for key in data.keys()]
-                send_msg = {key : [] for key in keys}
+                keys = data.keys()
+                send_msg = {int(key): [] for key in keys}
 
                 for key in keys:
                     if key == -1: # get game, returns a list of players
@@ -48,7 +48,7 @@ class Server(object):
 
                     if player.game:
                         if key == 0:  # guess
-                            correct = player.game.player_guess(player,data[0][0])
+                            correct = player.game.player_guess(player, data[0][0])
                             send_msg[0] = correct
                         elif key == 1:  # skip
                             skip = player.game.skip()
@@ -72,21 +72,23 @@ class Server(object):
                             skips = player.game.round.skips
                             send_msg[7] = skips
                         elif key == 8:  # update board
-                             x, y, color = data[8][:3]
-                             self.game.update_board(x, y, color)
+                            x, y, color = data[8][:3]
+                            player.game.update_board(x, y, color)
                         elif key == 9:  # get round time
-                             t = self.game.round.time
-                             send_msg[9] = t
-                        else:
-                            raise Exception("Not a valid operation")
+                            t = player.game.round.time
+                            send_msg[9] = t
+                    if key == 10:  # disconnect code
+                        raise Exception("Not a valid operation")
 
-                conn.sendall(json.dumps(send_msg))
+                send_msg = json.dumps(send_msg)
+                conn.sendall(send_msg.encode())
 
             except Exception as e:
-                print(f"[EXCEPTION] {player.get_name()} disconnected", e)
-                conn.close()
+                print(f"[EXCEPTION] {player.get_name()}", e)
                 break
                 # todo call player game disconnect method
+        print(f"[DISCONNECTED] {player.name} DISCONNECTED")
+        conn.close()
 
     def handle_queue(self, player):
         """
@@ -108,7 +110,6 @@ class Server(object):
     def authentication(self, conn, addr):
         """
         authentication here
-        :param ip: str
         :return: None
         """
         try:
@@ -152,3 +153,4 @@ if __name__ == "__main__":
     s = Server()
     thread = threading.Thread(target=s.connection_thread)
     thread.start()
+
