@@ -85,6 +85,7 @@ class Server(object):
             except Exception as e:
                 print(f"[EXCEPTION] {player.get_name()} disconnected", e)
                 conn.close()
+                break
                 # todo call player game disconnect method
 
     def handle_queue(self, player):

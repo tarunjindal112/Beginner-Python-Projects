@@ -21,8 +21,8 @@ class Network:
 
     def send(self, data):
         try:
-            data = bytes(data, "utf8")
-            self.client.send(json.dumps(data))
+
+            self.client.send(data.encode())
             return json.loads(self.client.recv(2048))
         except socket.error as e:
             self.disconnect(e)
