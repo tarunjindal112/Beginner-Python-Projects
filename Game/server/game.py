@@ -17,7 +17,7 @@ class Game(object):
         """
         self.id = id
         self.players = players
-        self.words_used = set
+        self.words_used = set()
         self.round = None
         self.board = Board
         self.player_draw_ind = 0
@@ -27,12 +27,13 @@ class Game(object):
     def start_new_round(self):
         round_word = self.get_word()
         self.round = Round(round_word, self.players[self.player_draw_ind], self.players, self)
-        self.player_draw_ind += 1
         self.round_count += 1
 
         if self.player_draw_ind >= len(self.players):
-            self.end_round()
+            self.round_ended()
             self.end_game()
+
+        self.player_draw_ind += 1
 
     def player_guess(self, player, guess):
         """
@@ -120,7 +121,7 @@ class Game(object):
         gives a word that has not yet been used
         :return: str
         """
-        with open("word.txt", "r") as f:
+        with open("words.txt", "r") as f:
             words = []
 
             for line in f:

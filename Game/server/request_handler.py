@@ -12,7 +12,7 @@ import json
 
 
 class Server(object):
-    PLAYERS = 8
+    PLAYERS = 1
 
     def __init__(self):
         self.connection_queue = []
@@ -77,8 +77,6 @@ class Server(object):
                         elif key == 9:  # get round time
                             t = player.game.round.time
                             send_msg[9] = t
-                    if key == 10:  # disconnect code
-                        raise Exception("Not a valid operation")
 
                 send_msg = json.dumps(send_msg)
                 conn.sendall(send_msg.encode())
@@ -98,8 +96,8 @@ class Server(object):
         """
         self.connection_queue.append(player)
 
-        if len(self.connection_queue) >= 8:
-            game = Game(self.connection_queue[:],  self.game_id)
+        if len(self.connection_queue) >= self.PLAYERS:
+            game = Game(self.game_id, self.connection_queue[:])
 
             for p in self.connection_queue:
                 p.set_game(game)
