@@ -19,7 +19,7 @@ class Game(object):
         self.players = players
         self.words_used = set()
         self.round = None
-        self.board = Board
+        self.board = Board()
         self.player_draw_ind = 0
         self.round_count = 1
         self.start_new_round()
