@@ -32,23 +32,24 @@ class Server(object):
                     data = conn.recv(1024)
                     data = json.loads(data.decode())
                     print('[LOG] Received data:', data)
-                except:
+                except Exception as e:
                     break
 
                 # Player is not a part of game
-                keys = data.keys()
-                send_msg = {int(key): [] for key in keys}
+                keys = [int(key) for key in data.keys()]
+                send_msg = {key: [] for key in keys}
 
                 for key in keys:
                     if key == -1: # get game, returns a list of players
                         if player.game:
-                            send_msg[-1] = player.game.players
+                            send = {player.get_name(): player.get_score() for player in player.game.players}
+                            send_msg[-1] = send
                         else:
                             send_msg[-1] = []
 
                     if player.game:
                         if key == 0:  # guess
-                            correct = player.game.player_guess(player, data[0][0])
+                            correct = player.game.player_guess(player, data['0'][0])
                             send_msg[0] = correct
                         elif key == 1:  # skip
                             skip = player.game.skip()
@@ -84,8 +85,9 @@ class Server(object):
             except Exception as e:
                 print(f"[EXCEPTION] {player.get_name()}", e)
                 break
-                # todo call player game disconnect method
+
         print(f"[DISCONNECTED] {player.name} DISCONNECTED")
+        # player.game.player_disconnected(player)
         conn.close()
 
     def handle_queue(self, player):

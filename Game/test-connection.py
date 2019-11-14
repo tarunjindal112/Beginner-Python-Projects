@@ -33,4 +33,4 @@ class Network:
 
 
 n = Network("Tarun")
-print(n.send({0: []}))
+print(n.send({1: []}))
