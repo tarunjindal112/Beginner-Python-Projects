@@ -26,13 +26,19 @@ class Network:
             d = ""
             while 1:
                 last = self.client.recv(1024).decode()
-                try:
-                    if last == ".":
-                        break
-                except:
-                    break
                 d += last
                 print(d)
+                try:
+                    if d.count(".") == 1:
+                        break
+                except:
+                    pass
+
+            try:
+                if d[-1] == ".":
+                    d = d[:-1]
+            except:
+                pass
 
             keys = [key for key in data.keys()]
             return json.loads(d)[str(keys[0])]
@@ -45,5 +51,11 @@ class Network:
 
 
 n = Network("Tarun")
-board = n.send({4: []})
-print(board)
+
+print("send 1")
+time = n.send({1: []})
+print(time)
+print("send 2")
+time = n.send({1: []})
+print(time)
+
