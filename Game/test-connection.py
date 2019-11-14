@@ -21,9 +21,21 @@ class Network:
 
     def send(self, data):
         try:
-
             self.client.send(json.dumps(data).encode())
-            return json.loads(self.client.recv(2048).decode())
+
+            d = ""
+            while 1:
+                last = self.client.recv(1024).decode()
+                try:
+                    if last == ".":
+                        break
+                except:
+                    break
+                d += last
+                print(d)
+
+            keys = [key for key in data.keys()]
+            return json.loads(d)[str(keys[0])]
         except socket.error as e:
             self.disconnect(e)
 
@@ -33,4 +45,5 @@ class Network:
 
 
 n = Network("Tarun")
-print(n.send({1: []}))
+board = n.send({4: []})
+print(board)

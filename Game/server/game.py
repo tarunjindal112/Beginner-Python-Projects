@@ -92,7 +92,7 @@ class Game(object):
         give a dict of player scores.
         :return: dict
         """
-        scores = {player: player.get_score() for player in self.players}
+        scores = {player.name: player.get_score() for player in self.players}
         return scores
 
     def round_ended(self):
@@ -108,7 +108,7 @@ class Game(object):
         calls update method on board.
         :param x: int
         :param y: int
-        :param color: (int, int, int)
+        :param color: 0-8
         :return: None
         """
         if not self.board:
