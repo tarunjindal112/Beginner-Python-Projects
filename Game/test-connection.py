@@ -27,7 +27,6 @@ class Network:
             while 1:
                 last = self.client.recv(1024).decode()
                 d += last
-                print(d)
                 try:
                     if d.count(".") == 1:
                         break
@@ -53,9 +52,9 @@ class Network:
 n = Network("Tarun")
 
 print("send 1")
-time = n.send({1: []})
+time = n.send({3: []})
 print(time)
 print("send 2")
-time = n.send({1: []})
+time = n.send({5: []})
 print(time)
 
