@@ -38,12 +38,27 @@ class Board():
     def draw(self, win):
         for y, _ in enumerate(self.compressed_board):
             for x, col in enumerate(self.compressed_board[y]):
-                pygame.draw.rect(win, col, (y,x,1,1), 0)
+                pygame.draw.rect(win, col, (self.x + x, self.y, y, 1, 1), 0)
 
     def click(self, x, y):
-        pass
+        """
+        none if not in board, otherwise return place clicked on
+        in terms of row and col
+        :param x: float
+        :param y: float
+        :return: (int,int) or None
+        """
+        row = int(x - self.x)
+        col = int(y - self.y)
+
+        if 0 <= row <= self.ROWS and 0 <= col <= self.COLS:
+            return row, col
+
+        return None
 
     def update(self, x, y, color):
-        pass
+        self.board[y][x] = color
 
     def clear(self):
+        self.board = self.create_board()
+
