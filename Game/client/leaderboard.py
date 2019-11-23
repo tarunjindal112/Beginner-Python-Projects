@@ -9,7 +9,7 @@ class Leaderboard(object):
         self.x = x
         self.y = y
         self.WIDTH = 200
-        self.HEIGHT_ENTRY = 100
+        self.HEIGHT_ENTRY = 80
         self.players = []
         self.name_font = pygame.font.SysFont("comisans", 30, bold= True)
         self.score_font = pygame.font.SysFont("comiscans", 20)
