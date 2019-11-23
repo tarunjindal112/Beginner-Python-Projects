@@ -2,6 +2,7 @@
 Represent the player(s) in each game
 """
 
+
 class Player(object):
     def __init__(self, name):
         self.name = name

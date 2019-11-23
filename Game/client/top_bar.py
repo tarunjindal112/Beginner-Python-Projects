@@ -13,7 +13,7 @@ class TopBar(object):
         self.word = ""
         self.round = 1
         self.max_round = 8
-        self.round_font = pygame.font.Sysfont("comicsans", 50)
+        self.round_font = pygame.font.SysFont("comicsans", 50)
         self.BORDER_THICKNESS = 5
 
     def draw(self, win):
@@ -44,4 +44,3 @@ class TopBar(object):
     def change_round(self, rnd):
         self.round = rnd
 
-        

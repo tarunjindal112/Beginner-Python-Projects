@@ -5,7 +5,7 @@ from top_bar import TopBar
 from main_menu import MainMenu
 from menu import Menu
 from tool_bar import ToolBar
-from leaderboard import Learderboard
+from leaderboard import Leaderboard
 from player import Player
 
 
@@ -15,7 +15,7 @@ class Game:
         self.WIDTH = 1300
         self.HEIGHT = 900
         self.win = pygame.display.set_mode((self.WIDTH, self.HEIGHT))
-        self.leaderboard = Learderboard(100, 120)
+        self.leaderboard = Leaderboard(100, 120)
         self.board = Board(310, 120)
         self.top_bar = TopBar(10, 10, 1280, 100)
         self.top_bar.change_round(1)
@@ -31,7 +31,7 @@ class Game:
         run = True
         clock = pygame.time.Clock()
         while run:
-            clock.tick(60)
+            clock.tick(30)
             self.draw()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -42,6 +42,7 @@ class Game:
 
 
 if __name__ == "__main__":
+    pygame.font.init()
     g = Game()
     g.run()
 

@@ -5,7 +5,7 @@ import pygame
 
 
 class Leaderboard(object):
-    def __init__(self, x, y, width, height):
+    def __init__(self, x, y):
         self.x = x
         self.y = y
         self.WIDTH = 200
